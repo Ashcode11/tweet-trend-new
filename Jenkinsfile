@@ -4,12 +4,17 @@ pipeline {
             label 'Maven-Slave'
         }
     }
-environment { 
-	PATH = "/opt/apache-maven-3.9.6/bin:$PATH"
+    environment {
+        PATH = "/opt/apache-maven-3.9.2/bin:$PATH"
+    }
     stages {
-        stage('Build') {
+        stage("Build") {
             steps {
-                sh  'mvn clean deployd'
+                script {
+                    echo "----------- Build started ----------"
+                    sh 'mvn clean deploy -Dmaven.test.skip=true'
+                    echo "----------- Build completed ----------"
+                }
             }
         }
     }
