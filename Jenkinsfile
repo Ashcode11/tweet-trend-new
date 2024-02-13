@@ -17,6 +17,18 @@ pipeline {
                 }
             }
         }
+        stage('SonarQube analysis') {
+            environment {
+                scannerHome = tool 'ash-sonar-scanner'
+            }
+            steps {
+                script {
+                    withSonarQubeEnv('ash-sonarqube-server') {
+                        sh "${scannerHome}/bin/sonar-scanner"
+                    }
+                }
+            }
+        }
     }
 }
 
