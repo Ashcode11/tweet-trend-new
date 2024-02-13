@@ -1,4 +1,4 @@
-pipeline {
+            pipeline {
     agent {
         node {
             label 'Maven-Slave'
@@ -8,13 +8,18 @@ pipeline {
         PATH = "/opt/apache-maven-3.9.6/bin:$PATH"
     }
     stages {
-        stage("Build") {
+        stage("build") {
             steps {
-                script {
-                    echo "----------- Build started ----------"
-                    sh 'mvn clean deploy -Dmaven.test.skip=true'
-                    echo "----------- Build completed ----------"
-                }
+                echo "----------- build started ----------"
+                sh 'mvn clean deploy -Dmaven.test.skip=true'
+                echo "----------- build completed ----------"
+            }
+        }
+        stage("test") {
+            steps {
+                echo "----------- unit test started ----------"
+                sh 'mvn surefire-report:report'
+                echo "----------- unit test completed ----------"
             }
         }
         stage('SonarQube analysis') {
